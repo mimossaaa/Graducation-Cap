@@ -97,8 +97,6 @@ void loop() {
   delay(100);
   printCenteredMessage("The Golden Bear", 0);
   printCenteredMessage("Awaits You!", 1);
-  printCenteredMessage("Achieve. Innovate.", 2);
-  printCenteredMessage("Inspire.", 3);
   delay(4000);
 
   // Message 4: GO BFS!
