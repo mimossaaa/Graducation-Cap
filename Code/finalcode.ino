@@ -1,6 +1,7 @@
 // ESP32_Arduino_for_Uno.ino
 // Expert embedded-systems solution for Arduino Uno R3 and I2C LCD.
-// This version displays centered, motivational graduation messages with UC Berkeley themes.
+// This version displays centered, motivational graduation messages with UC Berkeley themes,
+// including your new "GO BFS" messages.
 
 // Required Libraries:
 // 1. Wire.h: For I2C communication. This library is pre-installed with the Arduino IDE.
@@ -91,23 +92,23 @@ void loop() {
   printCenteredMessage("Inspire.", 3);
   delay(4000);
 
-  // Message 4: Future Focused
+  // Message 4: GO BFS! (Replaced previous "Embrace the Future" block)
   lcd.clear();
   delay(100);
-  printCenteredMessage("Embrace the Future", 0);
-  printCenteredMessage("Full of Possibilities", 1);
-  printCenteredMessage("At CAL!", 2);
-  printCenteredMessage("We are proud!", 3);
+  printCenteredMessage("GO BFS", 0);
+  printCenteredMessage("The best club at", 1); // Split for 20-column screen
+  printCenteredMessage("Balboa", 2);          // Continuation of the message
+  printCenteredMessage("4L", 3);
   delay(4000);
 
-  // Message 5: Short and Sweet
+  // Message 5: Short and Sweet (Original position maintained)
   lcd.clear();
   delay(100);
   printCenteredMessage("YOU DID IT!", 1); // Centered on row 1
   printCenteredMessage("GO BEARS!", 2); // Centered on row 2
   delay(3000);
 
-  // Demonstrate the scrolling if you still want some dynamic effect
+  // Demonstrate the scrolling if you still want some dynamic effect (Original position maintained)
   lcd.clear();
   delay(100);
   String scrollText = "   Berkeley Here You Come! The Future Is Yours!   ";
