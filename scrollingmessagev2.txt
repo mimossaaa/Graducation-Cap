@@ -1,0 +1,214 @@
+// ESP32_Arduino_for_Uno.ino
+// Expert embedded-systems solution for Arduino Uno R3 and I2C LCD.
+// This version uses user-provided custom characters and makes them scroll.
+
+// Required Libraries:
+// 1. Wire.h: For I2C communication. This library is pre-installed with the Arduino IDE.
+// 2. LiquidCrystal_I2C.h: For controlling I2C LCDs.
+//    To install: Open Arduino IDE -> Sketch -> Include Library -> Manage Libraries...
+//    Search for "LiquidCrystal I2C" by Frank de Brabander (or a similar popular one) and install it.
+
+#include <Wire.h>             // Include the I2C communication library
+#include <LiquidCrystal_I2C.h> // Include the LCD I2C library
+
+// --- Configuration Definitions ---
+const int LCD_COLS = 20;     // Number of columns on the LCD (e.g., 16, 20)
+const int LCD_ROWS = 4;      // Number of rows on the LCD (e.g., 2, 4)
+const int LCD_ADDRESS = 0x3F; // I2C address of the LCD module. Common addresses are 0x27 or 0x3F.
+                              // If your LCD doesn't work, try changing this address.
+
+// --- Custom Character Definitions (User Provided) ---
+// Each character is defined by an 8-byte array representing its 5x8 pixel pattern.
+// The B (binary) prefix is used for clarity. A '1' means the pixel is ON.
+//
+// These are mapped to character codes \x00 through \x07 in setup().
+
+byte custom0[8] = { // Looks like a custom 'C' or rounded shape
+  B00000,
+  B01110,
+  B01010,
+  B01000,
+  B01000,
+  B01010,
+  B01110,
+  B00000
+};
+
+byte custom1[8] = { // Looks like a custom 'B' or '8'
+  B00000,
+  B01110,
+  B01010,
+  B01010,
+  B01110,
+  B01010,
+  B01010,
+  B00000
+};
+
+byte custom2[8] = { // Looks like a custom 'L'
+  B00000,
+  B01000,
+  B01000,
+  B01000,
+  B01000,
+  B01000,
+  B01110,
+  B00000
+};
+
+byte custom3[8] = { // Looks like a custom 'E' or 'D'
+  B00000,
+  B01110,
+  B01010,
+  B01110,
+  B01010,
+  B01010,
+  B01110,
+  B00000
+};
+
+byte custom4[8] = { // Looks like a custom 'O' or '0'
+  B00000,
+  B01110,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B01110,
+  B00000
+};
+
+byte custom5[8] = { // Looks like a custom 'U' or 'V'
+  B00000,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B01110,
+  B01110,
+  B00000
+};
+
+byte custom6[8] = { // Looks like a custom 'P' or 'F'
+  B00000,
+  B01000,
+  B01110,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B00000
+};
+
+byte custom7[8] = { // Looks like a custom 'D' or 'R'
+  B00000,
+  B01100,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B01110,
+  B00000
+};
+
+
+// --- LCD Object Initialization ---
+// Create an LCD object with the specified I2C address, columns, and rows.
+LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLS, LCD_ROWS);
+
+// --- Setup Function ---
+// Runs once when the Arduino Uno R3 starts.
+void setup() {
+  // Initialize Serial communication for debugging messages.
+  Serial.begin(9600); // Common and reliable baud rate for Arduino Uno.
+  Serial.println("Arduino Uno I2C LCD Custom Character Scrolling Demo Start");
+
+  // Initialize the I2C bus.
+  // For Arduino Uno R3, Wire.begin() implicitly uses A4 (SDA) and A5 (SCL).
+  Wire.begin();
+  Serial.println("I2C bus initialized for Arduino Uno.");
+
+  // Initialize the LCD.
+  lcd.init();
+  Serial.println("LCD initialization command sent.");
+
+  // Turn on the LCD backlight.
+  lcd.backlight();
+  Serial.println("LCD backlight ON.");
+
+  // Define custom characters. Map the custom arrays to indices 0-7.
+  lcd.createChar(0, custom0);
+  lcd.createChar(1, custom1);
+  lcd.createChar(2, custom2);
+  lcd.createChar(3, custom3);
+  lcd.createChar(4, custom4);
+  lcd.createChar(5, custom5);
+  lcd.createChar(6, custom6);
+  lcd.createChar(7, custom7);
+  Serial.println("Custom characters created and stored.");
+
+  // Clear the LCD display to ensure a clean start
+  lcd.clear();
+
+  // Initial message
+  lcd.setCursor(0, 0);
+  lcd.print("Scrolling Custom!");
+  lcd.setCursor(0, 1);
+  lcd.print("Characters Now!");
+  delay(2000);
+  lcd.clear();
+}
+
+// --- printSegment Function ---
+// Displays a segment of a message on a specific row and column.
+// This function is universal for both standard and custom characters.
+//
+// Parameters:
+//   text: The string segment to display, potentially containing custom character indices (0-7).
+//   row: The row (0-indexed) where the text will start.
+//   col: The column (0-indexed) where the text will start.
+void printSegment(String text, int row, int col) {
+  lcd.setCursor(col, row);
+  for (int i = 0; i < text.length(); i++) {
+    char c = text.charAt(i);
+    if (c >= 0 && c <= 7) { // Check if character is a custom character index
+      lcd.write(c);         // Print the custom character
+    } else {
+      lcd.print(c);         // Print a normal ASCII character
+    }
+  }
+}
+
+// --- Loop Function ---
+// Runs repeatedly after setup() completes.
+void loop() {
+  // Define the sequence of custom characters to scroll
+  // You can repeat them or mix them with spaces
+  String scrollingChars = " \x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07 ";
+  // Add some padding spaces to make the scrolling smooth from off-screen
+  scrollingChars = "          " + scrollingChars + "          ";
+
+  lcd.clear(); // Clear the screen before starting the scroll
+  delay(100);
+
+  // --- Scrolling animation for custom characters ---
+  // The loop iterates through the 'scrollingChars' string, taking a substring
+  // that fits the LCD_COLS width and displaying it.
+  for (int i = 0; i < scrollingChars.length() - LCD_COLS + 1; i++) {
+    printSegment(scrollingChars.substring(i, i + LCD_COLS), 0, 0); // Display on row 0
+    // Optional: display a static message on other rows
+    printSegment("Go Class of 2025!", 2, 1);
+    printSegment("Bound for Greatness!", 3, 0);
+    delay(300); // Adjust delay for scrolling speed (smaller = faster)
+  }
+
+  delay(2000); // Pause at the end of the scroll
+  lcd.clear();
+
+  // --- Example of another message (standard font) ---
+  printSegment("Great Job!", 0, 0);
+  printSegment("You earned it!", 1, 0);
+  delay(3000);
+
+  lcd.clear();
+}
