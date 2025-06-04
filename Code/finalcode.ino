@@ -79,7 +79,7 @@ void loop() {
   delay(100);
   printCenteredMessage("Congrats Bal Grads", 0); // Fits on one line
   printCenteredMessage("2025", 1);                // Fits on one line, centered below
-  printCenteredMessage("The Future Is Bright!", 2);
+  printCenteredMessage("", 2);
   printCenteredMessage("Good Luck Everyone!", 3);
   delay(4000);
 
