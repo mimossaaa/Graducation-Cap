@@ -1,7 +1,7 @@
 // ESP32_Arduino_for_Uno.ino
 // Expert embedded-systems solution for Arduino Uno R3 and I2C LCD.
 // This version displays centered, motivational graduation messages with UC Berkeley themes,
-// including your new "GO BFS" messages.
+// including your new "Congrats Bal Grads 2025" messages.
 
 // Required Libraries:
 // 1. Wire.h: For I2C communication. This library is pre-installed with the Arduino IDE.
@@ -69,9 +69,18 @@ void loop() {
   lcd.clear();
   delay(100);
   printCenteredMessage("CONGRATULATIONS!", 0);
-  printCenteredMessage("Class of 2025!", 1);
-  printCenteredMessage("Your Journey Begins", 2);
-  printCenteredMessage("Now!", 3);
+  printCenteredMessage("Your Journey Begins", 1);
+  printCenteredMessage("Now!", 2);
+  printCenteredMessage("So Proud of You!", 3); // Added a line to fill the screen
+  delay(4000);
+
+  // NEW Message: Congrats Bal Grads 2025
+  lcd.clear();
+  delay(100);
+  printCenteredMessage("Congrats Bal Grads", 0); // Fits on one line
+  printCenteredMessage("2025", 1);                // Fits on one line, centered below
+  printCenteredMessage("The Future Is Bright!", 2);
+  printCenteredMessage("Good Luck Everyone!", 3);
   delay(4000);
 
   // Message 2: UC Berkeley Specific
@@ -92,23 +101,23 @@ void loop() {
   printCenteredMessage("Inspire.", 3);
   delay(4000);
 
-  // Message 4: GO BFS! (Replaced previous "Embrace the Future" block)
+  // Message 4: GO BFS!
   lcd.clear();
   delay(100);
   printCenteredMessage("GO BFS", 0);
-  printCenteredMessage("The best club at", 1); // Split for 20-column screen
-  printCenteredMessage("Balboa", 2);          // Continuation of the message
+  printCenteredMessage("The best club at", 1);
+  printCenteredMessage("Balboa", 2);
   printCenteredMessage("4L", 3);
   delay(4000);
 
-  // Message 5: Short and Sweet (Original position maintained)
+  // Message 5: Short and Sweet
   lcd.clear();
   delay(100);
-  printCenteredMessage("YOU DID IT!", 1); // Centered on row 1
-  printCenteredMessage("GO BEARS!", 2); // Centered on row 2
+  printCenteredMessage("YOU DID IT!", 1);
+  printCenteredMessage("GO BEARS!", 2);
   delay(3000);
 
-  // Demonstrate the scrolling if you still want some dynamic effect (Original position maintained)
+  // Demonstrate the scrolling
   lcd.clear();
   delay(100);
   String scrollText = "   Berkeley Here You Come! The Future Is Yours!   ";
