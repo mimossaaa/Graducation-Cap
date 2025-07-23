@@ -1,7 +1,4 @@
-// ESP32_Arduino_for_Uno.ino
-// Expert embedded-systems solution for Arduino Uno R3 and I2C LCD.
-// This version displays centered, motivational graduation messages with UC Berkeley themes,
-// including your new "Congrats Bal Grads 2025" messages.
+//  messages.
 
 // Required Libraries:
 // 1. Wire.h: For I2C communication. This library is pre-installed with the Arduino IDE.
